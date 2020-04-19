@@ -47,6 +47,17 @@ router.get("/:id", validateCarId, async (req, res, next) => {
   }
 });
 
+// Update a car by id
+router.put("/:id", validateCarId, async (req, res, next) => {
+  try {
+    const newCar = await insert(req.body);
+    res.status(200).json(newCar);
+  }
+  catch {
+    console.log(err);
+    next(err);
+  }
+});
 /**
  * @function validateCarId: Validate the the id exists before submitting req
  * @param {*} req: The request object sent to the API
