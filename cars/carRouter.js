@@ -10,6 +10,17 @@ const {
   remove
 } = require("./carDb");
 
+// Add a new car record
+router.post("/", async (req, res, next) => {
+  try {
+    const newCar = insert(req.body);
+    res.status(200).json(newCar);
+  }
+  catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
 
 
 /**
