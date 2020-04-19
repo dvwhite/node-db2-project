@@ -22,6 +22,30 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// Get all car records
+router.get("/", async (req, res, next) => {
+  try {
+    const cars = await get();
+    res.status(200).json(cars);
+  }
+  catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
+
+// Get a specific car by id
+router.get("/:id", validateCarId, async (req, res, next) => {
+  try {
+    const id = Number(req.params.id)
+    const car = await getById(id);
+    res.status(200).json(car);
+  }
+  catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
 
 /**
  * @function validateCarId: Validate the the id exists before submitting req
