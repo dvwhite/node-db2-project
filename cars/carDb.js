@@ -32,3 +32,20 @@ function getById(id) {
     .where({ id })
     .first();
 }
+
+/**
+ * @function update: Update the resource with id
+ * @param {*} id: The id of the resource to update
+ * @param {*} updates: The changes to update the resource
+ * @returns: none
+ */
+// Update
+function update(id, updates) {
+  return db("cars")
+    .where({ id })
+    .update(updates)
+    .then(ids => {
+      console.log("updates:", ids)
+      // return getById(ids[0]);
+    });
+}
