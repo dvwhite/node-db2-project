@@ -58,6 +58,19 @@ router.put("/:id", validateCarId, async (req, res, next) => {
     next(err);
   }
 });
+
+// Delete a car by id
+router.delete("/:id", validateCarId, async (req, res, next) => {
+  try {
+    await remove(id);
+    res.send(204).end();
+  }
+  catch {
+    console.error(err);
+    next(err);
+  }
+})
+
 /**
  * @function validateCarId: Validate the the id exists before submitting req
  * @param {*} req: The request object sent to the API
