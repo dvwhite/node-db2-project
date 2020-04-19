@@ -49,3 +49,16 @@ function update(id, updates) {
       // return getById(ids[0]);
     });
 }
+
+// Delete
+
+/**
+ * @function remove: Deletes the resource with id
+ * @param {*} id: The id of the resource to delete
+ * @returns: none
+ */
+function remove(id) {
+  return db("users")
+    .where({ id })
+    .delete();
+}
