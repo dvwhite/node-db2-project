@@ -3,6 +3,7 @@ const db = require("../data/dbConfig");
 module.exports = {
   get,
   getById,
+  getByVIN,
   insert,
   update,
   remove
@@ -13,6 +14,7 @@ function insert(car) {
   return db("cars")
     .insert(car)
     .then(ids => {
+      console.log('ids:', ids)
       return getById(ids[0]);
     });
 }
@@ -30,6 +32,17 @@ function get(){
 function getById(id) {
   return db("cars")
     .where({ id })
+    .first();
+}
+
+/**
+ * @function getByVIN: Get the data for the resource with VIN
+ * @param {*} vin: The id of the resource to fetch
+ * @returns: none
+ */
+function getByVIN(vin) {
+  return db("cars")
+    .where({ vin })
     .first();
 }
 
