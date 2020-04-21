@@ -14,7 +14,6 @@ function insert(car) {
   return db("cars")
     .insert(car)
     .then(ids => {
-      console.log('ids:', ids)
       return getById(ids[0]);
     });
 }
@@ -57,10 +56,6 @@ function update(id, updates) {
   return db("cars")
     .where({ id })
     .update(updates)
-    .then(ids => {
-      console.log("updates:", ids)
-      // return getById(ids[0]);
-    });
 }
 
 // Delete
@@ -71,7 +66,7 @@ function update(id, updates) {
  * @returns: none
  */
 function remove(id) {
-  return db("users")
+  return db("cars")
     .where({ id })
     .delete();
 }
