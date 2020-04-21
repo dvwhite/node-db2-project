@@ -5,13 +5,17 @@ const router = express.Router();
 const { get, getById, getByVIN, insert, update, remove } = require("./carDb");
 
 // Constants
-VIN_LENGTH = 17;
+EXPECTED_VIN_LENGTH = 17;
 
 // Add a new car record
 router.post("/", validateCarVIN, async (req, res, next) => {
   try {
     const newCar = await insert(req.body);
-    res.status(200).json(newCar);
+    res.status(200).json({
+      message: "Success",
+      validation: [],
+      data: newCar,
+    });
   } catch (err) {
     errDetail(res, err);
   }
@@ -21,7 +25,11 @@ router.post("/", validateCarVIN, async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   try {
     const cars = await get();
-    res.status(200).json(cars);
+    res.status(200).json({
+      message: "Success",
+      validation: [],
+      data: cars,
+    });
   } catch (err) {
     errDetail(res, err);
   }
@@ -32,14 +40,18 @@ router.get("/:id", validateCarId, async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     const car = await getById(id);
-    res.status(200).json(car);
+    res.status(200).json({
+      message: "Success",
+      validation: [],
+      data: car,
+    });
   } catch (err) {
     errDetail(res, err);
   }
 });
 
 // Update a car by id
-router.put("/:id", validateCarId, validateCarVIN, async (req, res, next) => {
+router.put("/:id", validateCarId, validateCarVIN, async (req, res) => {
   try {
     const newCar = await insert(req.body);
     res.status(200).json(newCar);
@@ -51,8 +63,9 @@ router.put("/:id", validateCarId, validateCarVIN, async (req, res, next) => {
 // Delete a car by id
 router.delete("/:id", validateCarId, async (req, res, next) => {
   try {
+    const id = Number(req.params.id);
     await remove(id);
-    res.send(204).end();
+    res.status(204).end();
   } catch (err) {
     errDetail(res, err);
   }
@@ -72,7 +85,7 @@ async function validateCarId(req, res, next) {
     if (!car) {
       return res.status(404).json({
         message: "Not Found",
-        validation: ["User id doesn't exist"],
+        validation: ["Car id doesn't exist"],
         data: {},
       });
     }
@@ -99,7 +112,7 @@ async function validateCarVIN(req, res, next) {
         validation: ["VIN already exists"],
         data: {},
       });
-    } else if (VIN.length > VIN_LENGTH) {
+    } else if (VIN.length > EXPECTED_VIN_LENGTH) { // 1 <= VIN.length <= 17
       return res.status(400).json({
         message: "Bad Request",
         validation: ["VIN is not the required length"],
