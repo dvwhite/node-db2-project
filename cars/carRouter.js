@@ -53,8 +53,13 @@ router.get("/:id", validateCarId, async (req, res, next) => {
 // Update a car by id
 router.put("/:id", validateCarId, validateCarVIN, async (req, res) => {
   try {
-    const newCar = await insert(req.body);
-    res.status(200).json(newCar);
+    const id = Number(req.params.id)
+    const updatedCar = await update(id, req.body);
+    res.status(200).json({
+      message: "Success",
+      validation: [],
+      data: updatedCar,
+    });
   } catch (err) {
     errDetail(res, err);
   }
@@ -112,7 +117,8 @@ async function validateCarVIN(req, res, next) {
         validation: ["VIN already exists"],
         data: {},
       });
-    } else if (VIN.length > EXPECTED_VIN_LENGTH) { // 1 <= VIN.length <= 17
+    } else if (VIN.length > EXPECTED_VIN_LENGTH) {
+      // 1 <= VIN.length <= 17
       return res.status(400).json({
         message: "Bad Request",
         validation: ["VIN is not the required length"],
