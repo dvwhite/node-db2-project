@@ -53,7 +53,7 @@ router.get("/:id", validateCarId, async (req, res, next) => {
 // Update a car by id
 router.put("/:id", validateCarId, validateCarVIN, async (req, res) => {
   try {
-    const id = Number(req.params.id)
+    const id = Number(req.params.id);
     const updatedCar = await update(id, req.body);
     res.status(200).json({
       message: "Success",
